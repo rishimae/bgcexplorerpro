@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Itinerary App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Dashboard -->
+        <div id="dashboard" class="dashboard">
+            <div class="sidebar">
+                
+                <nav class="menu">
+                    <ul>
+                        <li><a href="dashboard.html" class="menu-link active">Dashboard</a></li>
+                        <li><a href="saved.html" class="menu-link">Saved</a></li>
+                        <li><a href="trips.html" class="menu-link">Trips</a></li>
+                        <li><a href="completed.html" class="menu-link">Completed</a></li>
+                        <li><a href="settings.html" class="menu-link">Settings</a></li>
+                        <li><a href="index.html" class="menu-link">Log Out</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="main-content">
+                <h1>Welcome to Your Dashboard</h1>
+                         <p>Explore destinations, manage trips, and more.</p>
+                <div class="categories">
+                    <!-- Restaurants -->
+                    <div class="category">
+                        <h3>Restaurants</h3>
+                        <div class="places-container">
+                            <div class="place-container">
+                                <div class="place-card">
+                                    <img src="serendra.jpg" alt="Place 1">
+                                    <h2>Serendra</h2>
+                                    <p class="description">A mix of high-rise and mid-rise residential towers, home to Serendra Plaza with fine dining restaurants.</p>
+                                    <button class="save-btn" onclick="savePlace('Serendra')">Save</button>
+                                </div>
+                            </div>
+                            <div class="place-container">
+                                <div class="place-card">
+                                    <img src="fort.jpg" alt="Place 2">
+                                    <h2>The Fort Strip</h2>
+                                    <p class="description">A popular nightlife and dining destination, known for its lively atmosphere, diverse eateries, and trendy bars.</p>
+                                    <button class="save-btn" onclick="savePlace('The Fort Strip')">Save</button>
+                                </div>
+                            </div>
+                            <div class="place-container">
+                                <div class="place-card">
+                                    <img src="/mind.jpg" alt="Place 3">
+                                    <h2>The Mind Museum</h2>
+                                    <p class="description">Interactive science museum with fascinating exhibits and engaging activities for visitors of all ages.</p>
+                                    <button class="save-btn" onclick="savePlace('The Mind Museum')">Save</button>
+                                </div>
+                            </div>
+                            <div class="place-container">
+                                <div class="place-card">
+                                    <img src="/Central_square.jpg" alt="Central Square">
+                                    <h2>Central Square</h2>
+                                    <p class="description">A sophisticated shopping and dining hub, featuring high-end boutiques and gourmet restaurants.</p>
+                                    <button class="save-btn" onclick="savePlace('Central Square')">Save</button>
+                                </div>
+                            </div>
+                            <div class="place-container">
+                                <div class="place-card">
+                                    <img src="/arya.jpg" alt="Arya Plaza">
+                                    <h2>Arya Plaza </h2>
+                                    <p class="description">Offers a unique blend of retail and dining options, set in a stylish and contemporary environment.</p>
+                                    <button class="save-btn" onclick="savePlace('Arya Plaza')">Save</button>
+                                </div>
+                            </div>
+                            <div class="place-container">
+                                <div class="place-card">
+                                    <img src="/forbes.jpg" alt="Forbes Centre">
+                                    <h2>Forbes Centre</h2>
+                                    <p class="description">A premium destination for shopping and dining, known for its luxurious ambiance and exclusive brands.</p>
+                                    <button class="save-btn" onclick="savePlace('Forbes Centre')">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Malls -->
+                    <div class="category">
+                        <h3>Malls</h3>
+                        <div class="places-container">
+                            <div class="place-container">
+                                <div class="place-card">
+                                    <img src="/track.jpg" alt="Place 4">
+                                    <h2>BGC Track 30th</h2>
+                                    <p class="description">Urban park featuring jogging paths, exercise stations, and lush greenery, perfect for outdoor activities.</p>
+                                    <button class="save-btn" onclick="savePlace('BGC track 30th')">Save</button>
+                                </div>
+                            </div>
+                            <div class="place-container">
+                                <div class="place-card">
+                                    <img src="/uptown.jpg" alt="Place 5">
+                                    <h2>Uptown Mall</h2>
+                                    <p class="description">A modern shopping center with a wide range of retail stores, dining options, and entertainment facilities.</p>
+                                    <button class="save-btn" onclick="savePlace('Uptown Mall')">Save</button>
+                                </div>
+                            </div>
+                            <div class="place-container">
+                                <div class="place-card">
+                                    <img src="/image.png" alt="Place 6">
+                                    <h2>Bonifacio High Street</h2>
+                                    <p class="description">Offers an open-air shopping experience with a mix of local and international brands, cafes, and restaurants.</p>
+                                    <button class="save-btn" onclick="savePlace('Bonifacio High Street')">Save</button>
+                                </div>
+                            </div>
+                            <div class="place-container">
+                                <div class="place-card">
+                                    <img src="/aura.jpg" alt="SM Aura">
+                                    <h2>SM Aura</h2>
+                                    <p class="description">A premier shopping mall known for its upscale shops, dining options, and stunning architecture.</p>
+                                    <button class="save-btn" onclick="savePlace('SM Aura')">Save</button>
+                                </div>
+                            </div>
+                            <div class="place-container">
+                                <div class="place-card">
+                                    <img src="/market.jpg" alt="Market! Market!">
+                                    <h2>Market! Market!</h2>
+                                    <p class="description">Offers a variety of retail stores, food stalls, and entertainment options, making it a family-friendly destination.
+
+                                    </p>
+                                    <button class="save-btn" onclick="savePlace('Market! Market!')">Save</button>
+                                </div>
+                            </div>
+                            <div class="place-container">
+                                <div class="place-card">
+                                    <img src="/high.jpg" alt="One Bonifacio High Street Mall">
+                                    <h2>One Bonifacio High Street Mall </h2>
+                                    <p class="description">Features high-end shopping, dining, and entertainment in an elegant setting.</p>
+                                    <button class="save-btn" onclick="savePlace('One Bonifacio High Street Mall')">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Additional categories and place containers as needed -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google Maps API script -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
+    <script src="dashboard.js"></script>
+
+    <script>
+        function savePlace(placeName) {
+            // Retrieve existing saved places from localStorage
+            let savedPlaces = localStorage.getItem('savedPlaces');
+            savedPlaces = savedPlaces ? JSON.parse(savedPlaces) : [];
+
+            // Add the new place to saved places list if not already saved
+            if (!savedPlaces.includes(placeName)) {
+                savedPlaces.push(placeName);
+                localStorage.setItem('savedPlaces', JSON.stringify(savedPlaces));
+            }
+
+            // Redirect to saved.html after saving
+            window.location.href = 'saved.html';
+        }
+        
+    </script>
+</body>
+</html>

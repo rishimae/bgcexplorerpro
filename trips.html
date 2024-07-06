@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trips - Itinerary App</title>
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+    <div class="container">
+        <!-- Dashboard -->
+        <div id="dashboard" class="dashboard">
+            <div class="sidebar">
+                <nav class="menu">
+                    <ul>
+                        <li><a href="dashboard.html" class="menu-link">Dashboard</a></li>
+                        <li><a href="saved.html" class="menu-link">Saved</a></li>
+                        <li><a href="trips.html" class="menu-link active">Trips</a></li>
+                        <li><a href="completed.html" class="menu-link">Completed</a></li>
+                        <li><a href="settings.html" class="menu-link">Settings</a></li>
+                        <li><a href="index.html" class="menu-link">Log Out</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="main-content">
+                <div id="trips-section" class="content-section active">
+                    <h1>Trips</h1>
+                    <div id="scheduled-trips" class="trips-container-trips">
+                        <!-- Scheduled trips will be dynamically populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let scheduledPlaces = JSON.parse(localStorage.getItem('scheduledPlaces')) || [];
+            const scheduledTripsContainer = document.getElementById('scheduled-trips');
+
+            function getImagePath(placeName) {
+                switch (placeName) {
+                    case 'Serendra':
+                        return '/serendra.jpg';
+                    case 'The Fort Strip':
+                        return '/fort.jpg';
+                    case 'The Mind Museum':
+                        return '/mind.jpg';
+                    case 'BGC track 30th':
+                        return '/track.jpg';
+                    case 'Uptown Mall':
+                        return '/uptown.jpg';
+                    case 'Bonifacio High Street':
+                        return '/image.png';
+                    case 'Central Square':
+                        return '/Central_square.jpg';
+                    case 'Forbes Centre':
+                        return '/forbes.jpg';
+                    case 'Arya Plaza':
+                        return '/arya.jpg';
+                    case 'SM Aura':
+                        return '/aura.jpg';
+                    case 'Market! Market!':
+                        return '/market.jpg';
+                    case 'One Bonifacio High Street Mall':
+                        return '/high.jpg';
+                    default:
+                        return '/placeholder.jpg'; // Default image path if not found
+                }
+            }
+
+            function deleteTrip(placeName) {
+                scheduledPlaces = scheduledPlaces.filter(place => place.placeName !== placeName);
+                localStorage.setItem('scheduledPlaces', JSON.stringify(scheduledPlaces));
+                renderScheduledTrips();
+            }
+
+            function explorePlace(placeName) {
+                const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(placeName)}, BGC Taguig`;
+                window.open(googleMapsUrl, '_blank');
+            }
+
+            function markTripAsDone(placeName) {
+                const doneTrip = scheduledPlaces.find(place => place.placeName === placeName);
+                let completedTrips = JSON.parse(localStorage.getItem('completedTrips')) || [];
+                completedTrips.push(doneTrip);
+                localStorage.setItem('completedTrips', JSON.stringify(completedTrips));
+                scheduledPlaces = scheduledPlaces.filter(place => place.placeName !== placeName);
+                localStorage.setItem('scheduledPlaces', JSON.stringify(scheduledPlaces));
+                renderScheduledTrips();
+                window.location.href = 'completed.html';
+            }
+
+            function renderScheduledTrips() {
+                scheduledTripsContainer.innerHTML = '';
+
+                if (scheduledPlaces.length > 0) {
+                    scheduledPlaces.forEach(place => {
+                        const tripCard = document.createElement('div');
+                        tripCard.classList.add('place-card');
+
+                        const img = document.createElement('img');
+                        img.src = getImagePath(place.placeName);
+                        img.alt = place.placeName;
+
+                        const h2 = document.createElement('h2');
+                        h2.textContent = place.placeName;
+
+                        const p = document.createElement('p');
+                        p.textContent = `Scheduled Date and Time: ${place.selectedDateTime}`;
+
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.textContent = 'Delete';
+                        deleteBtn.classList.add('delete-btn');
+                        deleteBtn.addEventListener('click', () => deleteTrip(place.placeName));
+
+                        const exploreBtn = document.createElement('button');
+                        exploreBtn.textContent = 'Explore';
+                        exploreBtn.classList.add('explore-btn');
+                        exploreBtn.addEventListener('click', () => explorePlace(place.placeName));
+
+                        const doneBtn = document.createElement('button');
+                        doneBtn.textContent = 'Done';
+                        doneBtn.classList.add('done-btn');
+                        doneBtn.addEventListener('click', () => markTripAsDone(place.placeName));
+
+                        tripCard.appendChild(img);
+                        tripCard.appendChild(h2);
+                        tripCard.appendChild(p);
+                        tripCard.appendChild(deleteBtn);
+                        tripCard.appendChild(exploreBtn);
+                        tripCard.appendChild(doneBtn);
+
+                        scheduledTripsContainer.appendChild(tripCard);
+                    });
+                } else {
+                    const noTripsScheduled = document.createElement('p');
+                    noTripsScheduled.textContent = 'No trips scheduled yet.';
+                    scheduledTripsContainer.appendChild(noTripsScheduled);
+                }
+            }
+
+            renderScheduledTrips();
+        });
+    </script>
+</body>
+</html>

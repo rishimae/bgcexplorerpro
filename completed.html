@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Completed - Itinerary App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Dashboard -->
+        <div id="dashboard" class="dashboard">
+            <div class="sidebar">
+                
+                <nav class="menu">
+                    <ul>
+                        <li><a href="dashboard.html" class="menu-link">Dashboard</a></li>
+                        <li><a href="saved.html" class="menu-link">Saved</a></li>
+                        <li><a href="trips.html" class="menu-link">Trips</a></li>
+                        <li><a href="completed.html" class="menu-link active">Completed</a></li>
+                        <li><a href="settings.html" class="menu-link">Settings</a></li>
+                        <li><a href="index.html" class="menu-link">Log Out</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="main-content">
+                <div id="completed-section" class="content-section active">
+                    <h1>Completed Trips</h1>
+                    <div id="completed-trips" class="trips-container">
+                        <!-- Completed trips will be dynamically populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="dashboard.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const completedTripsContainer = document.getElementById('completed-trips');
+            let completedTrips = JSON.parse(localStorage.getItem('completedTrips')) || [];
+
+            function getImagePath(placeName) {
+                switch (placeName) {
+                    case 'Serendra':
+                        return '/serendra.jpg';
+                    case 'The Fort Strip':
+                        return '/fort.jpg';
+                    case 'The Mind Museum':
+                        return '/mind.jpg';
+                    case 'BGC track 30th':
+                        return '/track.jpg';
+                    case 'Uptown Mall':
+                        return '/uptown.jpg';
+                    case 'Bonifacio High Street':
+                        return '/image.png';
+                    default:
+                        return '/placeholder.jpg'; // Default image path if not found
+                }
+            }
+
+            function renderCompletedTrips() {
+                completedTripsContainer.innerHTML = '';
+
+                if (completedTrips.length > 0) {
+                    completedTrips.forEach(place => {
+                        const tripCard = document.createElement('div');
+                        tripCard.classList.add('place-card');
+
+                        const img = document.createElement('img');
+                        img.src = getImagePath(place.placeName);
+                        img.alt = place.placeName;
+
+                        const h2 = document.createElement('h2');
+                        h2.textContent = place.placeName;
+
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.textContent = 'Delete';
+                        deleteBtn.classList.add('delete-btn');
+                        deleteBtn.addEventListener('click', () => deleteTrip(place.placeName));
+
+                        tripCard.appendChild(img);
+                        tripCard.appendChild(h2);
+                        tripCard.appendChild(deleteBtn);
+
+                        completedTripsContainer.appendChild(tripCard);
+                    });
+                } else {
+                    const noTripsCompleted = document.createElement('p');
+                    noTripsCompleted.textContent = 'No trips completed yet.';
+                    completedTripsContainer.appendChild(noTripsCompleted);
+                }
+            }
+
+            function deleteTrip(placeName) {
+                completedTrips = completedTrips.filter(place => place.placeName !== placeName);
+                localStorage.setItem('completedTrips', JSON.stringify(completedTrips));
+                renderCompletedTrips();
+            }
+
+            renderCompletedTrips();
+        });
+    </script>
+</body>
+</html>

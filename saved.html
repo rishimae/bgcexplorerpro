@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saved - Itinerary App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Dashboard -->
+        <div id="dashboard" class="dashboard">
+            <div class="sidebar">
+                
+                <nav class="menu">
+                    <ul>
+                        <li><a href="dashboard.html" class="menu-link">Dashboard</a></li>
+                        <li><a href="saved.html" class="menu-link active">Saved</a></li>
+                        <li><a href="trips.html" class="menu-link">Trips</a></li>
+                        <li><a href="completed.html" class="menu-link">Completed</a></li>
+                        <li><a href="settings.html" class="menu-link">Settings</a></li>
+                        <li><a href="index.html" class="menu-link">Log Out</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="main-content">
+                <div id="saved-section" class="content-section active">
+                    <h1>Saved Places</h1>
+                    <div id="saved-places" class="places-container-saved">
+                        <!-- Saved places will be dynamically populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="dashboard.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Retrieve saved places from localStorage
+            let savedPlaces = localStorage.getItem('savedPlaces');
+            savedPlaces = savedPlaces ? JSON.parse(savedPlaces) : [];
+
+            const savedPlacesContainer = document.getElementById('saved-places');
+
+            // Function to map place names to their respective image paths
+            function getImagePath(placeName) {
+                switch (placeName) {
+                    case 'Serendra':
+                        return '/serendra.jpg';
+                    case 'The Fort Strip':
+                        return '/fort.jpg';
+                    case 'The Mind Museum':
+                        return '/mind.jpg';
+                    case 'BGC track 30th':
+                        return '/track.jpg';
+                    case 'Uptown Mall':
+                        return '/uptown.jpg';
+                    case 'Bonifacio High Street':
+                        return '/image.png';
+                    case 'Central Square':
+                        return '/Central_square.jpg';
+                    case 'Forbes Centre':
+                        return '/forbes.jpg';
+                    case 'Arya Plaza':
+                        return '/arya.jpg';
+                    case 'SM Aura':
+                        return '/aura.jpg';
+                    case 'Market! Market!':
+                        return '/market.jpg';
+                     case 'One Bonifacio High Street Mall':
+                        return '/high.jpg';
+                    
+                    default:
+                        return '/placeholder.jpg'; // Default image path if not found
+                }
+            }
+
+            // Function to remove a place from savedPlaces and update UI
+            function removePlace(placeName) {
+                savedPlaces = savedPlaces.filter(place => place !== placeName);
+                localStorage.setItem('savedPlaces', JSON.stringify(savedPlaces));
+                renderSavedPlaces();
+            }
+
+            // Function to schedule a visit with date and time input
+            function scheduleVisit(placeName, placeCard) {
+                // Create schedule container
+                const scheduleContainer = document.createElement('div');
+                scheduleContainer.classList.add('schedule-container');
+
+                // Create date/time picker
+                const dateTimePicker = document.createElement('input');
+                dateTimePicker.type = 'datetime-local';
+                dateTimePicker.id = 'visit-date-time';
+
+                // Create confirm button
+                const confirmBtn = document.createElement('button');
+                confirmBtn.textContent = 'Confirm';
+                confirmBtn.classList.add('confirm-btn');
+                confirmBtn.addEventListener('click', () => {
+                    const selectedDateTime = dateTimePicker.value;
+                    if (!selectedDateTime) {
+                        alert('Please select a date and time.');
+                        return;
+                    }
+                    // Create or update scheduledPlaces array in localStorage
+                    let scheduledPlaces = JSON.parse(localStorage.getItem('scheduledPlaces')) || [];
+
+                    // Check if the placeName is already scheduled
+                    const alreadyScheduled = scheduledPlaces.some(place => place.placeName === placeName);
+                    if (alreadyScheduled) {
+                        alert(`You have already scheduled a visit to ${placeName}.`);
+                        return;
+                    }
+
+                    // Store scheduled place data in localStorage
+                    scheduledPlaces.push({ placeName, selectedDateTime });
+                    localStorage.setItem('scheduledPlaces', JSON.stringify(scheduledPlaces));
+
+                    // Store scheduled place card HTML in localStorage
+                    const scheduledPlaceCardHTML = placeCard.outerHTML;
+                    localStorage.setItem('scheduledPlaceCardHTML', scheduledPlaceCardHTML);
+
+                    alert(`Scheduled a visit to ${placeName} on ${selectedDateTime}`);
+
+                    // Redirect to trips.html after scheduling
+                    window.location.href = 'trips.html';
+                });
+
+                // Append elements to schedule container
+                scheduleContainer.appendChild(dateTimePicker);
+                scheduleContainer.appendChild(confirmBtn);
+
+                // Append schedule container to place card
+                placeCard.appendChild(scheduleContainer);
+            }
+
+            // Function to render saved places on the page
+            function renderSavedPlaces() {
+                savedPlacesContainer.innerHTML = '';
+
+                if (savedPlaces.length > 0) {
+                    savedPlaces.forEach(place => {
+                        const placeCard = document.createElement('div');
+                        placeCard.classList.add('place-card');
+
+                        const img = document.createElement('img');
+                        img.src = getImagePath(place); // Get the image path based on place name
+                        img.alt = place;
+
+                        const h2 = document.createElement('h2');
+                        h2.textContent = place;
+
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.textContent = 'Delete';
+                        deleteBtn.classList.add('delete-btn');
+                        deleteBtn.addEventListener('click', () => removePlace(place));
+
+                        const scheduleBtn = document.createElement('button');
+                        scheduleBtn.textContent = 'Schedule';
+                        scheduleBtn.classList.add('schedule-btn');
+                        scheduleBtn.addEventListener('click', () => scheduleVisit(place, placeCard)); // Pass placeCard to scheduleVisit
+
+                        placeCard.appendChild(img);
+                        placeCard.appendChild(h2);
+                        placeCard.appendChild(deleteBtn);
+                        placeCard.appendChild(scheduleBtn);
+
+                        savedPlacesContainer.appendChild(placeCard);
+                    });
+                } else {
+                    const noPlacesSaved = document.createElement('p');
+                    noPlacesSaved.textContent = 'No places saved yet.';
+                    savedPlacesContainer.appendChild(noPlacesSaved);
+                }
+            }
+
+            // Initial render of saved places
+            renderSavedPlaces();
+        });
+    </script>
+</body>
+</html>
